@@ -19,15 +19,15 @@ lm:shared_library 'lua51' {
     }
 }
 
-lm:shared_library 'struct' {
+lm:shared_library 'lpack' {
     deps = {
         'lua51',
     },
     sources = {
-        'struct.c',
+        'lpack.c',
     },
     defines = {
         'STRUCT_INT="long long"',
     },
-    ldflags = '/EXPORT:luaopen_struct'
+    ldflags = '/EXPORT:luaopen_lpack'
 }

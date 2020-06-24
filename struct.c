@@ -19,7 +19,7 @@
 ** cn - sequence of 'n' chars (from/to a string); when packing, n==0 means
         the whole string; when unpacking, n==0 means use the previous
         read number as the string length
-** s - zero-terminated string
+** z - zero-terminated string
 ** f - float
 ** d - double
 ** ' ' - ignored
@@ -239,13 +239,13 @@ static int b_pack (lua_State *L) {
         luaL_addlstring(&b, (char *)&d, size);
         break;
       }
-      case 'c': case 's': {
+      case 'c': case 'z': {
         size_t l;
         const char *s = luaL_checklstring(L, arg++, &l);
         if (size == 0) size = l;
         luaL_argcheck(L, l >= (size_t)size, arg, "string too short");
         luaL_addlstring(&b, s, size);
-        if (opt == 's') {
+        if (opt == 'z') {
           luaL_addchar(&b, '\0');  /* add zero at the end */
           size++;
         }
@@ -339,7 +339,7 @@ static int b_unpack (lua_State *L) {
         lua_pushlstring(L, data+pos, size); n++;
         break;
       }
-      case 's': {
+      case 'z': {
         const char *e = (const char *)memchr(data+pos, '\0', ld - pos);
         if (e == NULL)
           luaL_error(L, "unfinished string in data");
@@ -365,8 +365,8 @@ static int b_size (lua_State *L) {
     int opt = *fmt++;
     size_t size = optsize(L, opt, &fmt);
     pos += gettoalign(pos, &h, opt, size);
-    if (opt == 's')
-      luaL_argerror(L, 1, "option 's' has no fixed size");
+    if (opt == 'z')
+      luaL_argerror(L, 1, "option 'z' has no fixed size");
     else if (opt == 'c' && size == 0)
       luaL_argerror(L, 1, "option 'c0' has no fixed size");
     if (!isalnum(opt))

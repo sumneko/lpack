@@ -384,7 +384,7 @@ static int b_size (lua_State *L) {
 static const struct luaL_Reg thislib[] = {
   {"pack", b_pack},
   {"unpack", b_unpack},
-  {"size", b_size},
+  {"packsize", b_size},
   {NULL, NULL}
 };
 

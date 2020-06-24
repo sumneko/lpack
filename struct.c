@@ -392,7 +392,8 @@ static const struct luaL_Reg thislib[] = {
 LUALIB_API int luaopen_struct (lua_State *L);
 
 LUALIB_API int luaopen_struct (lua_State *L) {
-  luaL_register(L, "struct", thislib);
+  lua_newtable(L);
+  luaL_register(L, NULL, thislib);
   return 1;
 }
 
